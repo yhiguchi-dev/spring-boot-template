@@ -5,13 +5,13 @@ WORKDIR app
 COPY gradle/ ./gradle/
 COPY *.gradle gradlew ./
 
-RUN ./gradlew dependencies --console verbose
+RUN ./gradlew dependencies --configuration compileClasspath
 
 FROM setup-builder as builder
 
 COPY ./ ./
 
-RUN ./gradlew build -x test -x check --console verbose
+RUN ./gradlew build -x test -x check
 
 FROM amazoncorretto:17 as runtime
 
