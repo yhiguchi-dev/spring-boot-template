@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
-    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-    id 'java'
-    id 'com.diffplug.spotless' version '6.9.0'
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'java'
+	id 'com.diffplug.spotless' version '6.11.0'
 }
 
 group = 'com.example'
@@ -10,26 +10,42 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-    mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://repo.spring.io/snapshot' }
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+sourceSets {
+	main {
+		resources.srcDirs = [
+			"src/main/java",
+			"src/main/resources"
+		]
+	}
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
-    runtimeOnly 'org.postgresql:postgresql'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
 
 spotless {
-    java {
-        importOrder()
-        removeUnusedImports()
-        googleJavaFormat()
-    }
+	java {
+		target '**/src/**/*.java'
+		importOrder()
+		removeUnusedImports()
+		googleJavaFormat()
+	}
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
 }

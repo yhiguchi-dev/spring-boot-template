@@ -1,0 +1,1 @@
+create table if not exists users(id char(35), name varchar(256));
