@@ -11,7 +11,7 @@ FROM setup-builder as builder
 
 COPY ./ ./
 
-RUN ./gradlew build -x test -x check
+RUN ./gradlew clean build -x test -x check
 
 FROM amazoncorretto:17 as runtime
 
