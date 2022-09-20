@@ -1,12 +1,15 @@
+---
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/test
     username: postgres
     password: asdf
     driver-class-name: org.postgresql.Driver
+---
 server:
   port: 8080
   shutdown: graceful
+---
 management:
   endpoints:
     web:
