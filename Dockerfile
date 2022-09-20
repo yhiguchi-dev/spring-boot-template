@@ -1,6 +1,6 @@
 FROM amazoncorretto:17 as setup-builder
 
-WORKDIR app
+WORKDIR /app
 
 COPY gradle/ ./gradle/
 COPY *.gradle gradlew ./
@@ -15,7 +15,7 @@ RUN ./gradlew clean build -x test -x check
 
 FROM amazoncorretto:17 as runtime
 
-WORKDIR app
+WORKDIR /app
 
 COPY --from=builder /app/build/libs/*.jar ./
 
