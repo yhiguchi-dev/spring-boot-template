@@ -1,7 +1,7 @@
 ---
 spring:
   config:
-    import: optional:file:./config/test.yaml
+    import: optional:file:${CONFIG_PATH:./config}/test.yaml
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/test
 #    username: postgres
