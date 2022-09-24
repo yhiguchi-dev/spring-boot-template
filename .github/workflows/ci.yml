@@ -36,9 +36,13 @@ jobs:
         context: .
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/sampleapp:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
         context: database
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/sampleapp-flyway:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
