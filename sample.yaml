@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sample
+  name: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sample
+    spec:
+      containers:
+        - image: ghcr.io/yhiguchi-dev/sampleapp:latest
+          name: sampleapp
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /etc/config
+              name: cm-sample-volume
+          env:
+            - name: CONFIG_PATH
+              value: /etc/config
+          resources: {}
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+              port: 8080
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 10"]
+      volumes:
+        - name: cm-sample-volume
+          configMap:
+            name: cm-sample
+      initContainers:
+        - name: sampleapp-flyway
+          image: ghcr.io/yhiguchi-dev/sampleapp-flyway:latest
+          env:
+            - name: FLYWAY_URL
+              value: jdbc:postgresql://svc-database.default.svc.cluster.local/test
+            - name: FLYWAY_USER
+              value: postgres
+            - name: FLYWAY_PASSWORD
+              value: asdf
+          command: ["flyway", "migrate"]
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sample
+  name: svc-sample
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: sample
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+data:
+  test.yaml: |-
+    ---
+    foo:
+      bar: asdf
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-sample

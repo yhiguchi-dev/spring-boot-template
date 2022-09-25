@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: database
+    spec:
+      containers:
+        - image: postgres:14
+          name: sample-database
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: asdf
+            - name: POSTGRES_DB
+              value: test
+          resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: database
+  name: svc-database
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: database
+  type: LoadBalancer
+status:
+  loadBalancer: {}
