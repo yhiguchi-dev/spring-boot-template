@@ -1,4 +1,4 @@
-FROM amazoncorretto:17 as setup-builder
+FROM amazoncorretto:19 as setup-builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY src/ ./src/
 
 RUN ./gradlew clean build -x test -x check
 
-FROM amazoncorretto:17 as runtime
+FROM amazoncorretto:19 as runtime
 
 WORKDIR /app
 
