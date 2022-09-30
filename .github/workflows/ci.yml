@@ -22,6 +22,8 @@ jobs:
         working-directory: ./template
   build:
     runs-on: ubuntu-latest
+    needs:
+      - lint
     strategy:
       matrix:
         build-context:
