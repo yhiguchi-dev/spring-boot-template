@@ -41,12 +41,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build ${{ matrix.node-version }}
+      - name: Build ${{ matrix.build-context }}
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ matrix.node-version }}
+          context: ./${{ matrix.build-context }}
           load: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.node-version }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.build-context }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run Trivy vulnerability scanner
@@ -58,11 +58,11 @@ jobs:
           ignore-unfixed: true
           vuln-type: os,library
           severity: CRITICAL,HIGH
-      - name: Push ${{ matrix.node-version }}
+      - name: Push ${{ matrix.build-context }}
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ matrix.node-version }}
+          context: ./${{ matrix.build-context }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.node-version }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.build-context }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
