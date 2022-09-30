@@ -19,6 +19,7 @@ jobs:
           cache: gradle
       - name: Build with Gradle
         run: ./gradlew check
+        working-directory: ./template
   build:
     runs-on: ubuntu-latest
     strategy:
