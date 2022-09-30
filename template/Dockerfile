@@ -9,7 +9,7 @@ RUN ./gradlew dependencies
 
 FROM setup-builder as builder
 
-COPY ./ ./
+COPY src/ ./src/
 
 RUN ./gradlew clean build -x test -x check
 
